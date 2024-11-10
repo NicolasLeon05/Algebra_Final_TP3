@@ -6,10 +6,12 @@ public class Plane
 {
     [SerializeField] private Vector3 normal;
     [SerializeField] private Vector3 point;
-    [SerializeField] private Vector3[] vertices;
+    [SerializeField] public Vector3[] vertices;
 
     public Vector3 Normal => normal;
     public Vector3 Point => point;
+
+    public float distance = 0.0f;
 
     // Propiedad Center calculada a partir de los vértices
     public Vector3 Center
@@ -23,7 +25,8 @@ public class Plane
     // Constructor con normal y punto de referencia
     public Plane(Vector3 normal, Vector3 point)
     {
-        this.normal = normal;
+        this.normal = normal.normalized;
+        this.distance = -Vector3.Dot(this.normal, point);
         this.point = point;
     }
 
@@ -32,6 +35,7 @@ public class Plane
     {
         normal = Vector3.Cross(vect2 - vect1, vect3 - vect1).normalized; // Normal calculada por producto cruzado
         point = vect1;  // Un punto en el plano
+        this.distance = -Vector3.Dot(normal, point);
         vertices = new Vector3[] { vect1, vect2, vect3 }; // Almacena los vértices
     }
 

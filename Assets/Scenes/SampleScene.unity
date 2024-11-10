@@ -206,7 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe128c4f911fefe40986b41a0842cb73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triangles: []
+  poligon: []
   meshFilter: {fileID: 0}
   planes: []
 --- !u!114 &179584285
@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe128c4f911fefe40986b41a0842cb73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triangles: []
+  poligon: []
   meshFilter: {fileID: 0}
   planes: []
 --- !u!114 &291241267
@@ -361,15 +361,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 76ed2cf29e02d2b458fbfce9879567cc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.9422932
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 76ed2cf29e02d2b458fbfce9879567cc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 76ed2cf29e02d2b458fbfce9879567cc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.8269682
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 76ed2cf29e02d2b458fbfce9879567cc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -641,7 +641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe128c4f911fefe40986b41a0842cb73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triangles: []
+  poligon: []
   meshFilter: {fileID: 0}
   planes: []
 --- !u!114 &1270122757
@@ -675,7 +675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe128c4f911fefe40986b41a0842cb73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triangles: []
+  poligon: []
   meshFilter: {fileID: 0}
   planes: []
 --- !u!114 &1438592053
@@ -709,7 +709,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe128c4f911fefe40986b41a0842cb73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triangles: []
+  poligon: []
   meshFilter: {fileID: 0}
   planes: []
 --- !u!114 &1769731860
@@ -736,15 +736,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: d088f3a69d7ae694994a7ff8daa52f17, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.5587568
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d088f3a69d7ae694994a7ff8daa52f17, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.934172
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d088f3a69d7ae694994a7ff8daa52f17, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.36
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d088f3a69d7ae694994a7ff8daa52f17, type: 3}
       propertyPath: m_LocalRotation.w

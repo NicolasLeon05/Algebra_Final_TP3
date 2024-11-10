@@ -5,10 +5,10 @@ using UnityEngine;
 public class Grid3d : MonoBehaviour
 {
     public GameObject pointPrefab;
-    public int gridSizeX = 10;     
-    public int gridSizeY = 10;     
-    public int gridSizeZ = 10;     
-    public float spacing = 5.0f;   
+    public int gridSizeX = 10;
+    public int gridSizeY = 10;
+    public int gridSizeZ = 10;
+    public float spacing = 5.0f;
     public List<GameObject> objects = new List<GameObject>();
     private List<Vector3> gridPoints = new List<Vector3>();
 
@@ -62,12 +62,12 @@ public class Grid3d : MonoBehaviour
 
                 for (int i = 0; i < gridPoints.Count(); i++)
                 {
-                    if (obj1Mesh && obj1Mesh.ContainAPoint(gridPoints[i]) && obj2Mesh && obj2Mesh.ContainAPoint(gridPoints[i]))
+                    if (obj1Mesh.ContainAPoint(gridPoints[i]) && obj2Mesh.ContainAPoint(gridPoints[i]))
                     {
                         Debug.Log($"{obj1.name} colisiona con {obj2.name}");
+                        break;
                     }
                 }
-
             }
         }
     }

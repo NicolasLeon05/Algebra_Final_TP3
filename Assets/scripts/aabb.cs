@@ -46,7 +46,6 @@ public class aabb : MonoBehaviour
         }
     }
 
-
     public bool IsColliding(aabb other)
     {
         float aMaxX = GetCenter().x + GetSize().x / 2;
@@ -65,11 +64,13 @@ public class aabb : MonoBehaviour
         float bMinY = other.GetCenter().y - other.GetSize().y / 2;
         float bMinZ = other.GetCenter().z - other.GetSize().z / 2;
 
-        return (aMinX <= bMaxX && aMaxX >= bMinX &&
+        if (aMinX <= bMaxX && aMaxX >= bMinX &&
                 aMinY <= bMaxY && aMaxY >= bMinY &&
-                aMinZ <= bMaxZ && aMaxZ >= bMinZ);
-
-
+                aMinZ <= bMaxZ && aMaxZ >= bMinZ)
+        {
+            return true;
+        }
+        /*
         Vector3 distance = other.GetCenter() - GetCenter();
         Vector3 fucionSizeHalf = other.GetSize() / 2 + GetSize() / 2;
 
@@ -77,7 +78,9 @@ public class aabb : MonoBehaviour
 
         distance -= fucionSizeHalf;
 
-        return (distance.x < Vector3.zero.x && distance.y < Vector3.zero.y && distance.z < Vector3.zero.z);
+        return (distance.x < Vector3.zero.x && distance.y < Vector3.zero.y && distance.z < Vector3.zero.z);*/
+
+        return false;
     }
 
     public Vector3 GetCenter()
