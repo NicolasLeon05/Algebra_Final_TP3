@@ -1,16 +1,16 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Grid3d : MonoBehaviour
 {
-    public GameObject pointPrefab; // Prefab del punto (puede ser una esfera, cubo, etc.)
-    public int gridSizeX = 10;     // Tamaño de la grilla en X
-    public int gridSizeY = 10;     // Tamaño de la grilla en Y
-    public int gridSizeZ = 10;     // Tamaño de la grilla en Z
-    public float spacing = 5.0f;   // Espaciado entre los puntos
-    public List<GameObject> objects = new List<GameObject>(); // Lista de objetos en la grilla
-
-    private List<GameObject> gridPoints = new List<GameObject>(); // Lista de puntos generados en la grilla
+    public GameObject pointPrefab;
+    public int gridSizeX = 10;     
+    public int gridSizeY = 10;     
+    public int gridSizeZ = 10;     
+    public float spacing = 5.0f;   
+    public List<GameObject> objects = new List<GameObject>();
+    private List<Vector3> gridPoints = new List<Vector3>();
 
     void Start()
     {
@@ -19,57 +19,55 @@ public class Grid3d : MonoBehaviour
 
     private void Update()
     {
-        // Revisar las colisiones para cada objeto y cada punto generado en la grilla
-        foreach (var obj in objects)
+        for (int i = 0; i < objects.Count(); i++)
         {
-            foreach (var point in gridPoints)
+            for (int j = 0; j < objects.Count(); j++)
             {
-                CheckCollisions(obj, point);
+                if (i != j)
+                    CheckCollisions(objects[i], objects[j]);
             }
         }
     }
 
     void GenerateGrid()
     {
-        // Primero generamos la grilla de puntos
+
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++)
             {
                 for (int z = 0; z < gridSizeZ; z++)
                 {
-                    // Calcular la posición de cada punto en el espacio
-                    Vector3 position = new Vector3(x * spacing, y * spacing, z * spacing);
 
-                    // Instanciar el punto en la escena y almacenarlo en la lista
-                    GameObject newPoint = Instantiate(pointPrefab, position, Quaternion.identity);
-                    gridPoints.Add(newPoint);
+                    Vector3 position = new Vector3(x * spacing, y * spacing, z * spacing);
+                    gridPoints.Add(position);
+
+                    Instantiate(pointPrefab, position, Quaternion.identity);
                 }
             }
         }
     }
 
-    void CheckCollisions(GameObject obj, GameObject generatedPoint)
+    void CheckCollisions(GameObject obj1, GameObject obj2)
     {
-        // Obtener los colliders de ambos objetos
-        CollitionBetweenBoxes objCollider = obj.GetComponent<CollitionBetweenBoxes>();
-        CollitionBetweenBoxes pointCollider = generatedPoint.GetComponent<CollitionBetweenBoxes>();
+        aabb obj1Collider = obj1.GetComponent<aabb>();
+        aabb obj2Collider = obj2.GetComponent<aabb>();
 
-        if (objCollider != null && pointCollider != null)
+        if (obj1Collider && obj2Collider)
         {
-            // Comprobar si las Bounding Boxes están colisionando
-            if (objCollider.IsColliding(pointCollider))
+            if (obj1Collider.IsColliding(obj2Collider))
             {
-                // Transformar la posición del punto al espacio global
-                Vector3 globalPointPosition = generatedPoint.transform.position;
+                NormalsAndMesh obj1Mesh = obj1.GetComponent<NormalsAndMesh>();
+                NormalsAndMesh obj2Mesh = obj2.GetComponent<NormalsAndMesh>();
 
-                // Verificar si el punto está dentro de la malla del objeto
-                NormalsAndMesh objMesh = obj.GetComponent<NormalsAndMesh>();
-                if (objMesh != null && objMesh.ContainAPoint(globalPointPosition))
+                for (int i = 0; i < gridPoints.Count(); i++)
                 {
-                    // Si el punto está dentro de la malla, mostrar mensaje
-                    Debug.Log($"{obj.name} colisiona con {generatedPoint.name} en la posición {generatedPoint.transform.position}");
+                    if (obj1Mesh && obj1Mesh.ContainAPoint(gridPoints[i]) && obj2Mesh && obj2Mesh.ContainAPoint(gridPoints[i]))
+                    {
+                        Debug.Log($"{obj1.name} colisiona con {obj2.name}");
+                    }
                 }
+
             }
         }
     }

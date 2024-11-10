@@ -1,43 +1,43 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollitionBetweenBoxes : MonoBehaviour
+public class aabb : MonoBehaviour
 {
-    // Variables para el origen y tamaño del AABB
+
     [SerializeField] private Vector3 origin;
     [SerializeField] private Vector3 size;
 
-    // Referencia al MeshFilter y los vértices del objeto
+
     private MeshFilter meshFilter;
     private Vector3[] vertices;
 
-    // Vectores de límites del AABB
+
     private Vector3 minV;
     private Vector3 maxV;
 
     private void Start()
     {
-        // Inicializa los límites y el MeshFilter
+
         meshFilter = GetComponentInChildren<MeshFilter>();
         vertices = meshFilter.mesh.vertices;
 
-        // Calcula los límites iniciales del AABB
         UpdateBounds();
     }
 
     private void Update()
     {
-        // Actualiza los límites del AABB en cada frame
+
         UpdateBounds();
     }
 
-    // Calcula los límites del AABB en el espacio global
+
     private void UpdateBounds()
     {
         minV = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
         maxV = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
-        // Actualiza minV y maxV con los vértices en espacio global
+
         foreach (Vector3 vertex in vertices)
         {
             Vector3 globalVertex = transform.TransformPoint(vertex);
@@ -46,29 +46,52 @@ public class CollitionBetweenBoxes : MonoBehaviour
         }
     }
 
-    // Verifica si este AABB colisiona con otro AABB
-    public bool IsColliding(CollitionBetweenBoxes other)
-    {
-        Vector3 distance = (other.GetCenter() - GetCenter()).Abs();
-        Vector3 combinedSize = (other.GetSize() + GetSize()) / 2;
 
-        // Verifica si hay solapamiento en los tres ejes
-        return (distance.x < combinedSize.x && distance.y < combinedSize.y && distance.z < combinedSize.z);
+    public bool IsColliding(aabb other)
+    {
+        float aMaxX = GetCenter().x + GetSize().x / 2;
+        float aMaxY = GetCenter().y + GetSize().y / 2;
+        float aMaxZ = GetCenter().z + GetSize().z / 2;
+
+        float aMinX = GetCenter().x - GetSize().x / 2;
+        float aMinY = GetCenter().y - GetSize().y / 2;
+        float aMinZ = GetCenter().z - GetSize().z / 2;
+
+        float bMaxX = other.GetCenter().x + other.GetSize().x / 2;
+        float bMaxY = other.GetCenter().y + other.GetSize().y / 2;
+        float bMaxZ = other.GetCenter().z + other.GetSize().z / 2;
+
+        float bMinX = other.GetCenter().x - other.GetSize().x / 2;
+        float bMinY = other.GetCenter().y - other.GetSize().y / 2;
+        float bMinZ = other.GetCenter().z - other.GetSize().z / 2;
+
+        return (aMinX <= bMaxX && aMaxX >= bMinX &&
+                aMinY <= bMaxY && aMaxY >= bMinY &&
+                aMinZ <= bMaxZ && aMaxZ >= bMinZ);
+
+
+        Vector3 distance = other.GetCenter() - GetCenter();
+        Vector3 fucionSizeHalf = other.GetSize() / 2 + GetSize() / 2;
+
+        distance.Abs();
+
+        distance -= fucionSizeHalf;
+
+        return (distance.x < Vector3.zero.x && distance.y < Vector3.zero.y && distance.z < Vector3.zero.z);
     }
 
-    // Obtiene el centro del AABB
     public Vector3 GetCenter()
     {
         return (minV + maxV) / 2;
     }
 
-    // Obtiene el tamaño del AABB
+
     public Vector3 GetSize()
     {
         return maxV - minV;
     }
 
-    // Dibuja el AABB como un cubo wireframe en el editor
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
@@ -76,7 +99,6 @@ public class CollitionBetweenBoxes : MonoBehaviour
     }
 }
 
-// Extensión para obtener valores absolutos de un Vector3
 public static class Vector3Extensions
 {
     public static Vector3 Abs(this Vector3 v)
