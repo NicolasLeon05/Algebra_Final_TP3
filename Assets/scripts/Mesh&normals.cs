@@ -65,7 +65,7 @@ public class NormalsAndMesh : MonoBehaviour
         for (int i = 0; i < planes.Count(); i++)
         {
             if (IsPointInPlane(planes[i], ray, out Vector3 t))
-                    counter++;
+                counter++;
         }
 
         return (counter % 2 == 1);
@@ -89,4 +89,56 @@ public class NormalsAndMesh : MonoBehaviour
         }
         return false;
     }
+
+    public bool WorkingContainAPoint(Vector3 point)
+    {
+        Vector3[] vertices = meshFilter.mesh.vertices;
+
+        Transform meshTransform = meshFilter.transform;
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            vertices[i] = meshTransform.TransformPoint(vertices[i]);
+        }
+
+
+        myBound bounds = CalculateMeshBounds();
+        Vector3 localPoint = meshTransform.InverseTransformPoint(point);
+
+
+        if (localPoint.x >= bounds.GetMin().x && localPoint.x <= bounds.GetMax().x &&
+        localPoint.y >= bounds.GetMin().y && localPoint.y <= bounds.GetMax().y &&
+        localPoint.z >= bounds.GetMin().z && localPoint.z <= bounds.GetMax().z)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public myBound CalculateMeshBounds()
+    {
+
+        Vector3[] vertices = meshFilter.mesh.vertices;
+
+        Transform meshTransform = meshFilter.transform;
+ 
+        Vector3 firstVertex = meshTransform.TransformPoint(vertices[0]);
+        Vector3 min = firstVertex;
+        Vector3 max = firstVertex;
+
+        for (int i = 1; i < vertices.Length; i++)
+        {
+            Vector3 worldVertex = meshTransform.TransformPoint(vertices[i]);
+
+ 
+            min = Vector3.Min(min, worldVertex);
+            max = Vector3.Max(max, worldVertex);
+        }
+
+        myBound bounds = new myBound();
+        bounds.SetMinMax(min, max);
+
+        return bounds;
+    }
+
 }

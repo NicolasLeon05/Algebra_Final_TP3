@@ -70,6 +70,7 @@ public class aabb : MonoBehaviour
         {
             return true;
         }
+
         /*
         Vector3 distance = other.GetCenter() - GetCenter();
         Vector3 fucionSizeHalf = other.GetSize() / 2 + GetSize() / 2;
