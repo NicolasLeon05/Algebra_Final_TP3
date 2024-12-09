@@ -19,17 +19,12 @@ public class DrawPyramid : MonoBehaviour
 
     float magnitudeA = 10.0f;
 
-    void Start()
-    {
-        magnitudeInitialized = false;
-    }
-
     // Update is called once per frame
     void OnDrawGizmos()
     {
         area = 0.0f;
         perimeter = 0.0f;
-        volume = 0.0f;  
+        volume = 0.0f;
 
         if (!calculated)
         {
@@ -54,11 +49,14 @@ public class DrawPyramid : MonoBehaviour
         // Posición inicial para la pirámide
         Vector3 currentPosition = Vector3.zero;
 
-        //Perimetro y area
+        // Perimetro y area
         float auxiliar = magnitudeA;
 
-        if (stepWidth >= vectorC.magnitude)
+        if (stepWidth >= vectorC.magnitude) // Cara de abajo
+        {
             perimeter += auxiliar * 4;
+            area += auxiliar * auxiliar;
+        }
 
         while (stepWidth >= vectorC.magnitude)
         {
@@ -85,15 +83,16 @@ public class DrawPyramid : MonoBehaviour
 
 
             // Dibujar la altura (escalón)
-            Gizmos.color = Color.green;
             Vector3 nextPosition = currentPosition + vectorC.normalized * stepHeight;
+
+            Gizmos.color = Color.green;
             Gizmos.DrawLine(corner1, corner1 + vectorC.normalized * stepHeight);
             Gizmos.DrawLine(corner2, corner2 + vectorC.normalized * stepHeight);
             Gizmos.DrawLine(corner3, corner3 + vectorC.normalized * stepHeight);
             Gizmos.DrawLine(corner4, corner4 + vectorC.normalized * stepHeight);
 
 
-            //Dibujar siguiente escalon
+            // Dibujar siguiente escalon
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(corner1 + vectorC.normalized * stepHeight, corner3 + vectorC.normalized * stepHeight);
             Gizmos.DrawLine(corner1 + vectorC.normalized * stepHeight, corner4 + vectorC.normalized * stepHeight);
@@ -101,7 +100,7 @@ public class DrawPyramid : MonoBehaviour
             Gizmos.DrawLine(corner2 + vectorC.normalized * stepHeight, corner4 + vectorC.normalized * stepHeight);
 
 
-            //Calcular area perimetro y volumen
+            // Calcular area perimetro y volumen
             area += auxiliar * vectorC.magnitude * 4; // Caras laterales
 
             if (stepWidth - vectorC.magnitude >= vectorC.magnitude - epsilon)
@@ -111,13 +110,13 @@ public class DrawPyramid : MonoBehaviour
             }
             else
             {
-                area += auxiliar * auxiliar;
+                area += auxiliar * auxiliar; // Ultima cara
             }
 
 
             perimeter += (vectorC.magnitude * 2 + auxiliar * 2) * 4; // Caras laterales
 
-            if (stepWidth >= vectorC.magnitude - epsilon) // Caras superiores
+            if (stepWidth - vectorC.magnitude >= vectorC.magnitude - epsilon) // Caras superiores
                 perimeter += ((vectorC.magnitude * 2 + auxiliar * 2) * 4 - (vectorC.magnitude * 4 * 4));
             else
                 perimeter += auxiliar * 4;
@@ -133,7 +132,7 @@ public class DrawPyramid : MonoBehaviour
             if (Mathf.Abs((stepWidth - vectorC.magnitude) - vectorC.magnitude) < epsilon)
                 stepWidth = vectorC.magnitude;
             else
-            stepWidth -= vectorC.magnitude; // Reducir el tamaño de la base en cada nivel
+                stepWidth -= vectorC.magnitude; // Reducir el tamaño de la base en cada nivel
 
             if (Mathf.Abs((auxiliar - vectorC.magnitude) - vectorC.magnitude) < epsilon)
                 auxiliar = vectorC.magnitude;
@@ -147,9 +146,9 @@ public class DrawPyramid : MonoBehaviour
     Vector3 GetCrossProduct(Vector3 a, Vector3 b)
     {
         Vector3 newVector;
-        float x = a.y * b.z - a.z * b.y;
-        float y = a.z * b.x - a.x * b.z;
-        float z = a.x * b.y - a.y * b.x;
+        float x = a.y * b.z - a.z * b.y; // Determinante vector unitario i
+        float y = a.z * b.x - a.x * b.z; // Determinante vector unitario j
+        float z = a.x * b.y - a.y * b.x; // Determinante vector unitario k
 
         newVector = new Vector3(x, y, z);
 
