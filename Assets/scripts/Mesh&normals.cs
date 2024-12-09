@@ -57,17 +57,6 @@ public class NormalsAndMesh : MonoBehaviour
     public bool WorkingContainAPoint(Vector3 point)
     {
         myBound bounds = CalculateMeshBounds();
-        /*
-        // Verificar si el punto está dentro de los límites
-        if (point.x >= bounds.GetMin().x && point.x <= bounds.GetMax().x &&
-            point.y >= bounds.GetMin().y && point.y <= bounds.GetMax().y &&
-            point.z >= bounds.GetMin().z && point.z <= bounds.GetMax().z)
-        {
-            return true;
-        }
-
-        return false;
-        */
 
         Vector3 localPoint = transform.InverseTransformPoint(point);
 
@@ -88,7 +77,7 @@ public class NormalsAndMesh : MonoBehaviour
 
         Vector3[] vertices = meshFilter.mesh.vertices;
         Transform meshTransform = meshFilter.transform;
- 
+
         Vector3 firstVertex = meshTransform.TransformPoint(vertices[0]);
         Vector3 min = firstVertex;
         Vector3 max = firstVertex;
@@ -97,7 +86,7 @@ public class NormalsAndMesh : MonoBehaviour
         {
             Vector3 worldVertex = meshTransform.TransformPoint(vertices[i]);
 
- 
+
             min = Vector3.Min(min, worldVertex);
             max = Vector3.Max(max, worldVertex);
         }

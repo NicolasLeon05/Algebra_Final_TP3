@@ -35,7 +35,6 @@ public class aabb : MonoBehaviour
         minV = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
         maxV = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
-
         foreach (Vector3 vertex in vertices)
         {
             Vector3 globalVertex = transform.TransformPoint(vertex);
@@ -91,10 +90,11 @@ public class aabb : MonoBehaviour
     }
 }
 
-public static class Vector3Extensions
+/*public static class Vector3Extensions
 {
     public static Vector3 Abs(this Vector3 v)
     {
         return new Vector3(Mathf.Abs(v.x), Mathf.Abs(v.y), Mathf.Abs(v.z));
     }
 }
+*/

@@ -11,8 +11,6 @@ public class Plane
     public Vector3 Normal => normal;
     public Vector3 Point => point;
 
-    public float distance = 0.0f;
-
     // Propiedad Center calculada a partir de los vértices
     public Vector3 Center
     {
@@ -22,28 +20,14 @@ public class Plane
         }
     }
 
-    // Constructor con normal y punto de referencia
-    public Plane(Vector3 normal, Vector3 point)
-    {
-        this.normal = normal.normalized;
-        this.distance = -Vector3.Dot(this.normal, point);
-        this.point = point;
-    }
-
     // Constructor con tres puntos que definen el plano
     public Plane(Vector3 vect1, Vector3 vect2, Vector3 vect3)
     {
         normal = Vector3.Cross(vect2 - vect1, vect3 - vect1).normalized; // Normal calculada por producto cruzado
         point = vect1;  // Un punto en el plano
-        this.distance = -Vector3.Dot(normal, point);
         vertices = new Vector3[] { vect1, vect2, vect3 }; // Almacena los vértices
     }
 
-    // Verifica si un punto está en el plano
-    public bool LiesOnPlane(Vector3 pointToCheck)
-    {
-        return Vector3.Dot(normal, pointToCheck - point) == 0;
-    }
 
     // Verifica si un punto está "en el lado positivo" del plano
     public bool IsInPlane(Vector3 pointToCheck)
