@@ -31,11 +31,4 @@ public class myBound
     public Vector3 GetMax() => max;
     public Vector3 GetCenter() => center;
     public Vector3 GetSize() => size;
-
-    public bool Contains(Vector3 point)
-    {
-        return point.x >= min.x && point.x <= max.x &&
-               point.y >= min.y && point.y <= max.y &&
-               point.z >= min.z && point.z <= max.z;
-    }
 }

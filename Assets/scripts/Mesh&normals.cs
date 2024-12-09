@@ -6,17 +6,6 @@ using UnityEngine;
 
 public class NormalsAndMesh : MonoBehaviour
 {
-    struct Ray
-    {
-        public Vector3 org;
-        public Vector3 dest;
-
-        public Ray(Vector3 org, Vector3 dest)
-        {
-            this.org = org;
-            this.dest = dest;
-        }
-    }
 
     [SerializeField] private List<Poligon> poligon = new List<Poligon>();
     [SerializeField] private MeshFilter meshFilter;
@@ -47,7 +36,6 @@ public class NormalsAndMesh : MonoBehaviour
 
             this.poligon.Add(poligon);
 
-
             planes.Add(new Plane(poligon.vertices[0], poligon.vertices[1], poligon.vertices[2]));
         }
     }
@@ -55,45 +43,21 @@ public class NormalsAndMesh : MonoBehaviour
     private void OnDrawGizmos()
     {
         planes.ForEach(plane => plane.DrawGizmo(transform));
-    }
 
-    public bool ContainAPoint(Vector3 point)
-    {
-        Ray ray = new Ray(point, Vector3.up * 10000);
-        int counter = 0;
-
-        for (int i = 0; i < planes.Count(); i++)
+        if (planes.Count > 0)
         {
-            if (IsPointInPlane(planes[i], ray, out Vector3 t))
-                counter++;
-        }
-
-        return (counter % 2 == 1);
-    }
-
-    bool IsPointInPlane(Plane plane, Ray ray, out Vector3 point)
-    {
-        point = Vector3.zero; // Tiene que se el punto de interseccion
-
-        float denom = Vector3.Dot(plane.Normal, ray.dest);
-
-        if (Mathf.Abs(denom) > Vector3.kEpsilon)
-        {
-            float t = Vector3.Dot((plane.Normal * plane.distance - ray.org), plane.Normal) / denom;
-
-            if (t >= Vector3.kEpsilon)
+            foreach (Plane plane in planes)
             {
-                point = ray.org + ray.dest * t;  //Vector3.Lerp
-                return true;
+                plane.DrawGizmo(transform);
             }
         }
-        return false;
     }
+
 
     public bool WorkingContainAPoint(Vector3 point)
     {
         myBound bounds = CalculateMeshBounds();
-
+        /*
         // Verificar si el punto está dentro de los límites
         if (point.x >= bounds.GetMin().x && point.x <= bounds.GetMax().x &&
             point.y >= bounds.GetMin().y && point.y <= bounds.GetMax().y &&
@@ -103,9 +67,21 @@ public class NormalsAndMesh : MonoBehaviour
         }
 
         return false;
+        */
+
+        Vector3 localPoint = transform.InverseTransformPoint(point);
+
+        // Verificar el punto contra cada plano
+        foreach (Plane plane in planes)
+        {
+            if (!plane.IsInPlane(localPoint))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
-
-
 
     public myBound CalculateMeshBounds()
     {
@@ -131,5 +107,6 @@ public class NormalsAndMesh : MonoBehaviour
 
         return bounds;
     }
+
 
 }

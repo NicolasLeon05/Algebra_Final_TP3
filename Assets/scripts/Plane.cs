@@ -46,9 +46,10 @@ public class Plane
     }
 
     // Verifica si un punto está "en el lado positivo" del plano
-    public bool IsPositiveToThePlane(Vector3 pointToCheck)
+    public bool IsInPlane(Vector3 pointToCheck)
     {
-        return Vector3.Dot(normal, pointToCheck - point) > 0;
+        float distanceToPlane = Vector3.Dot(normal, pointToCheck - point);
+        return distanceToPlane <= 0;
     }
 
     // Dibuja el plano como Gizmo en el editor de Unity

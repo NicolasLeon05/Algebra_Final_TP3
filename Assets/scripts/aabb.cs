@@ -5,9 +5,8 @@ using UnityEngine;
 public class aabb : MonoBehaviour
 {
 
-    [SerializeField] private Vector3 origin;
-    [SerializeField] private Vector3 size;
-
+    //[SerializeField] private Vector3 origin;
+    //[SerializeField] private Vector3 size;
 
     private MeshFilter meshFilter;
     private Vector3[] vertices;
@@ -27,7 +26,6 @@ public class aabb : MonoBehaviour
 
     private void Update()
     {
-
         UpdateBounds();
     }
 
@@ -70,16 +68,6 @@ public class aabb : MonoBehaviour
         {
             return true;
         }
-
-        /*
-        Vector3 distance = other.GetCenter() - GetCenter();
-        Vector3 fucionSizeHalf = other.GetSize() / 2 + GetSize() / 2;
-
-        distance.Abs();
-
-        distance -= fucionSizeHalf;
-
-        return (distance.x < Vector3.zero.x && distance.y < Vector3.zero.y && distance.z < Vector3.zero.z);*/
 
         return false;
     }
